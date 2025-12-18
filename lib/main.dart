@@ -1,5 +1,6 @@
 import 'package:drivingschool/controller/admin_controller.dart';
 import 'package:drivingschool/controller/payment_gateway.dart';
+import 'package:drivingschool/controller/slot_controller.dart';
 import 'package:drivingschool/controller/test_controller.dart';
 import 'package:drivingschool/controller/user_controller.dart';
 import 'package:drivingschool/firebase_options.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<TestController>(
           create: (context) => TestController(),
+        ),
+        ChangeNotifierProvider<SlotController>(
+          create: (context) => SlotController(),
         ),
       ],
       child: MaterialApp(

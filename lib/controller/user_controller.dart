@@ -6,6 +6,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:drivingschool/models/invoice_model.dart';
 import 'package:drivingschool/models/user_model.dart';
 import 'package:drivingschool/utils/authentication_dialogue_widget.dart';
+import 'package:drivingschool/views/admin/AdminSlotPage.dart';
 import 'package:drivingschool/views/admin/manage_contact.dart';
 import 'package:drivingschool/views/admin/manage_course.dart';
 import 'package:drivingschool/views/admin/manage_instructor.dart';
@@ -68,6 +69,11 @@ class UserController extends ChangeNotifier {
       'service name': 'Test Management',
       'icon': Iconsax.message_question,
       'onTap': const AdminTestResultsPage(),
+    },
+    {
+      'service name': 'Slots Management',
+      'icon': Iconsax.message_question,
+      'onTap': const AdminSlotPage(),
     },
   ];
   List<Map<String, dynamic>> userServiceList = [

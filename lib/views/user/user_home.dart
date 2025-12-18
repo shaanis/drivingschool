@@ -1,7 +1,9 @@
 import 'package:drivingschool/const.dart';
 import 'package:drivingschool/controller/user_controller.dart';
+import 'package:drivingschool/views/user/slot_booking_page.dart';
 import 'package:drivingschool/views/user/test_result_page.dart';
 import 'package:drivingschool/views/user/user_settings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -314,7 +316,7 @@ class _UserHomeState extends State<UserHome> {
                         const SizedBox(height: 40),
 
                         // Quick Actions
-                        _buildQuickActions(),
+                        _buildQuickActions(user),
 
                         const SizedBox(height: 30),
                       ],
@@ -457,7 +459,7 @@ class _UserHomeState extends State<UserHome> {
     );
   }
 
-  Widget _buildQuickActions() {
+  Widget _buildQuickActions(user) {
     final List<Map<String, dynamic>> actions = [
       {
         "icon": Iconsax.calendar_2,
@@ -469,7 +471,21 @@ class _UserHomeState extends State<UserHome> {
           );
         },
       },
-      {"icon": Iconsax.book, "label": "Lessons"},
+      {
+        "icon": Iconsax.book,
+        "label": "Lessons",
+        "onTap": () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => SlotBookingPage(
+                studentId: user.userID,
+                studentName: user.userName!,
+              ),
+            ),
+          );
+        },
+      },
       {"icon": Iconsax.wallet_3, "label": "Payments"},
       {"icon": Iconsax.message, "label": "Support"},
     ];
