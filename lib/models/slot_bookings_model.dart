@@ -5,6 +5,7 @@ class SlotBookingModel {
   final String slotId;
   final String studentId;
   final String studentName;
+  final String studentNumber;
   final String carName;
   final String slotTime;
   final DateTime createdAt;
@@ -15,6 +16,7 @@ class SlotBookingModel {
     required this.slotId,
     required this.studentId,
     required this.studentName,
+    required this.studentNumber,
     required this.carName,
     required this.slotTime,
     required this.createdAt,
@@ -27,6 +29,7 @@ class SlotBookingModel {
       "slotId": slotId,
       "studentId": studentId,
       "studentName": studentName,
+      "studentNumber": studentNumber,
       "carName": carName,
       "slotTime": slotTime,
       "createdAt": Timestamp.fromDate(createdAt),
@@ -40,14 +43,19 @@ class SlotBookingModel {
       slotId: map["slotId"] ?? "",
       studentId: map["studentId"] ?? "",
       studentName: map["studentName"] ?? "",
+      studentNumber: map["studentNumber"] ?? "",
       carName: map["carName"] ?? "",
       slotTime: map["slotTime"] ?? "",
-      createdAt: map["createdAt"] != null
+
+      // createdAt can be Timestamp or String
+      createdAt: map["createdAt"] is Timestamp
           ? (map["createdAt"] as Timestamp).toDate()
-          : DateTime.now(),
-      date: map["date"] != null
+          : DateTime.tryParse(map["createdAt"] ?? "") ?? DateTime.now(),
+
+      // date can be Timestamp or String
+      date: map["date"] is Timestamp
           ? (map["date"] as Timestamp).toDate()
-          : DateTime.now(),
+          : DateTime.tryParse(map["date"] ?? "") ?? DateTime.now(),
     );
   }
 }

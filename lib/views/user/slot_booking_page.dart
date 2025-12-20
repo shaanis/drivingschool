@@ -9,11 +9,13 @@ import 'package:provider/provider.dart';
 class SlotBookingPage extends StatefulWidget {
   final String studentId;
   final String studentName;
+  final String studentNumber;
 
   const SlotBookingPage({
     super.key,
     required this.studentId,
     required this.studentName,
+    required this.studentNumber,
   });
 
   @override
@@ -217,6 +219,7 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
         slotId: slot.id,
         studentId: widget.studentId,
         studentName: widget.studentName,
+        studentNumber: widget.studentNumber,
       );
 
       if (res == "success") {

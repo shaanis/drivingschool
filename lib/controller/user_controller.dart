@@ -7,6 +7,7 @@ import 'package:drivingschool/models/invoice_model.dart';
 import 'package:drivingschool/models/user_model.dart';
 import 'package:drivingschool/utils/authentication_dialogue_widget.dart';
 import 'package:drivingschool/views/admin/AdminSlotPage.dart';
+import 'package:drivingschool/views/admin/booked_slot_page.dart';
 import 'package:drivingschool/views/admin/manage_contact.dart';
 import 'package:drivingschool/views/admin/manage_course.dart';
 import 'package:drivingschool/views/admin/manage_instructor.dart';
@@ -60,20 +61,27 @@ class UserController extends ChangeNotifier {
       'icon': Iconsax.car,
       'onTap': RCListPage(),
     },
-    {
-      'service name': 'FAQ & Feedback',
-      'icon': Iconsax.message_question,
-      'onTap': const ManageContact(),
-    },
+
     {
       'service name': 'Test Management',
-      'icon': Iconsax.message_question,
+      'icon': Icons.card_giftcard_rounded,
+
       'onTap': const AdminTestResultsPage(),
     },
     {
       'service name': 'Slots Management',
-      'icon': Iconsax.message_question,
+      'icon': Icons.scatter_plot,
       'onTap': const AdminSlotPage(),
+    },
+    {
+      'service name': 'Booked Slots',
+      'icon': Icons.event_seat_outlined,
+      'onTap': const AdminBookedSlotsPage(),
+    },
+    {
+      'service name': 'FAQ & Feedback',
+      'icon': Iconsax.message_question,
+      'onTap': const ManageContact(),
     },
   ];
   List<Map<String, dynamic>> userServiceList = [

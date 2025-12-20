@@ -5,6 +5,15 @@ import 'package:intl/intl.dart';
 class SlotController extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isLoading = false;
+  List<Map<String, dynamic>> allBookings = [];
+  List<Map<String, dynamic>> filteredBookings = [];
+
+  String selectedDateFilter = "today"; // today | tomorrow
+  String searchQuery = "";
+
+  AdminBookedSlotsController() {
+    fetchTodaySlots(); // default load
+  }
 
   /// Add slot
   Future<String> addSlot({
@@ -13,6 +22,22 @@ class SlotController extends ChangeNotifier {
     required int slotsAvailable,
   }) async {
     try {
+      // Check if slot exists
+      final existingSlot = await _firestore
+          .collection('slots')
+          .where('carName', isEqualTo: carName)
+          .where('slotTime', isEqualTo: slotTime)
+          .get();
+
+      if (existingSlot.docs.isNotEmpty) {
+        return "Slot already exists for this car at same time";
+        print("booking exists");
+      }
+      if (existingSlot.docs.isNotEmpty) {
+        print("booking exists");
+      }
+
+      // If not exists → add new slot
       final doc = _firestore.collection('slots').doc();
       await doc.set({
         "id": doc.id,
@@ -101,6 +126,7 @@ class SlotController extends ChangeNotifier {
     required String slotId,
     required String studentId,
     required String studentName,
+    required String studentNumber,
   }) async {
     try {
       /// slot data fetch
@@ -140,6 +166,7 @@ class SlotController extends ChangeNotifier {
         "id": bookingDoc.id,
         "studentId": studentId,
         "studentName": studentName, // add dynamically later
+        "studentNumber": studentNumber.toString(), // add dynamically later
         "slotId": slotId,
         "slotTime": slotTime,
         "carName": carName,
@@ -155,5 +182,80 @@ class SlotController extends ChangeNotifier {
   /// Delete slot
   Future<void> deleteSlot(String slotId) async {
     await _firestore.collection('slots').doc(slotId).delete();
+  }
+
+  ///------------------------------
+  /// 🔥 GET TODAY BOOKINGS
+  ///------------------------------
+  Future<void> fetchTodaySlots() async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      String todayDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+      final snap = await _firestore
+          .collection("slotBookings")
+          .where("date", isEqualTo: todayDate)
+          .get();
+
+      allBookings = snap.docs.map((d) => d.data()).toList();
+      filteredBookings = List.from(allBookings);
+
+      selectedDateFilter = "today";
+    } catch (e) {
+      debugPrint("Fetch today error: $e");
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  ///------------------------------
+  /// 🔥 GET TOMORROW BOOKINGS
+  ///------------------------------
+  Future<void> fetchTomorrowSlots() async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      String tomorrowDate = DateFormat(
+        "yyyy-MM-dd",
+      ).format(DateTime.now().add(Duration(days: 1)));
+
+      final snap = await _firestore
+          .collection("slotBookings")
+          .where("date", isEqualTo: tomorrowDate)
+          .get();
+
+      allBookings = snap.docs.map((d) => d.data()).toList();
+      filteredBookings = List.from(allBookings);
+
+      selectedDateFilter = "tomorrow";
+    } catch (e) {
+      debugPrint("Fetch tomorrow error: $e");
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  ///------------------------------
+  /// 🔍 SEARCH STUDENT (NAME + NUMBER)
+  ///------------------------------
+  void searchSlots(String query) {
+    searchQuery = query.toLowerCase();
+
+    if (query.isEmpty) {
+      filteredBookings = List.from(allBookings);
+    } else {
+      filteredBookings = allBookings.where((slot) {
+        final name = slot["studentName"].toString().toLowerCase();
+        final number = slot["studentNumber"].toString().toLowerCase();
+        return name.contains(searchQuery) || number.contains(searchQuery);
+      }).toList();
+    }
+
+    notifyListeners();
   }
 }

@@ -15,6 +15,8 @@ class _AdminSlotPageState extends State<AdminSlotPage> {
   final slotsCtrl = TextEditingController();
   final timeCtrl = TextEditingController();
 
+  bool isCreating = false;
+
   Future<void> createSlot() async {
     if (carCtrl.text.isEmpty ||
         slotsCtrl.text.isEmpty ||
@@ -23,9 +25,30 @@ class _AdminSlotPageState extends State<AdminSlotPage> {
       return;
     }
 
-    await FirebaseFirestore.instance.collection("slots").add({
-      "carName": carCtrl.text.trim(),
-      "slotTime": timeCtrl.text.trim(),
+    setState(() => isCreating = true);
+
+    final carName = carCtrl.text.trim().toLowerCase();
+    final slotTime = timeCtrl.text.trim().toLowerCase();
+
+    // Unique doc id
+    final newId = "${carName}_${slotTime}".replaceAll(" ", "_");
+
+    final docRef = FirebaseFirestore.instance.collection("slots").doc(newId);
+
+    // Check if exists
+    final existing = await docRef.get();
+
+    if (existing.exists) {
+      showMessage("Slot already exists!", isError: true);
+      setState(() => isCreating = false);
+      return;
+    }
+
+    // Create slot
+    await docRef.set({
+      "id": newId,
+      "carName": carName,
+      "slotTime": slotTime,
       "slotsAvailable": int.parse(slotsCtrl.text.trim()),
       "bookedStudents": [],
       "status": "active",
@@ -33,9 +56,12 @@ class _AdminSlotPageState extends State<AdminSlotPage> {
     });
 
     showMessage("Slot created successfully!");
+
     carCtrl.clear();
     slotsCtrl.clear();
     timeCtrl.clear();
+
+    setState(() => isCreating = false);
   }
 
   void showMessage(String msg, {bool isError = false}) {
@@ -108,7 +134,7 @@ class _AdminSlotPageState extends State<AdminSlotPage> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: createSlot,
+              onPressed: isCreating ? null : createSlot,
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: defaultBlue,
@@ -117,7 +143,7 @@ class _AdminSlotPageState extends State<AdminSlotPage> {
                 ),
               ),
               child: Text(
-                "Create Slot",
+                isCreating ? "Creating..." : "Create Slot",
                 style: GoogleFonts.plusJakartaSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 15,

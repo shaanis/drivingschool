@@ -62,46 +62,10 @@ class _UserHomeState extends State<UserHome> {
 
             final user = userHomeController.userModel;
 
-            // if (user == null) {
-            //   return Center(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Icon(Icons.error_outline, color: Colors.red[300], size: 60),
-            //         const SizedBox(height: 20),
-            //         Text(
-            //           'Failed to load user data',
-            //           style: GoogleFonts.epilogue(
-            //             color: Colors.red,
-            //             fontSize: 18,
-            //           ),
-            //         ),
-            //         const SizedBox(height: 10),
-            //         ElevatedButton(
-            //           onPressed: () => setState(() {
-            //             _fetchUserFuture = userHomeController.fetchUserData(
-            //               widget.uid,
-            //             );
-            //           }),
-            //           style: ElevatedButton.styleFrom(
-            //             backgroundColor: defaultBlue,
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.circular(12),
-            //             ),
-            //           ),
-            //           child: Text(
-            //             'Retry',
-            //             style: GoogleFonts.epilogue(color: Colors.white),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   );
-            // }
-
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   expandedHeight: size.height * 0.24,
                   floating: false,
@@ -481,6 +445,7 @@ class _UserHomeState extends State<UserHome> {
               builder: (_) => SlotBookingPage(
                 studentId: user.userID,
                 studentName: user.userName!,
+                studentNumber: user.userNumber.toString(),
               ),
             ),
           );
