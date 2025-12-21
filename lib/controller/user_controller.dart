@@ -442,25 +442,31 @@ class UserController extends ChangeNotifier {
     String invoiceDate,
     double invoicePrice,
   ) async {
-    final date = DateTime.parse(invoiceDate);
+    final date = DateTime.parse(
+      DateFormat("dd-MMM-yyyy").parse(invoiceDate).toString(),
+    );
+
     DateTime dueDate = date.add(const Duration(days: 30));
-    String formttedDueDate = DateFormat("dd-MMM-yyy").format(dueDate);
+    String formattedDueDate = DateFormat("dd-MMM-yyyy").format(dueDate);
+
     final docs = firebaseFirestore
         .collection('users')
         .doc(firebaseAuth.currentUser!.uid)
         .collection('invoices')
         .doc();
+
     _invoiceModel = InvoiceModel(
       invoiceId: docs.id,
-      userId: firebaseAuth.currentUser!.uid, // Set userID
+      userId: firebaseAuth.currentUser!.uid,
       invoiceUserName: invoiceUserName,
       invoiceCourseName: invoiceCourseName,
       invoiceDate: invoiceDate,
       invoicePrice: invoicePrice,
-      dueDate: formttedDueDate,
+      dueDate: formattedDueDate,
     );
 
     await docs.set(_invoiceModel!.toMap());
+
     await firebaseFirestore
         .collection('invoices')
         .doc(docs.id)
@@ -493,9 +499,10 @@ class UserController extends ChangeNotifier {
   }
 
   /// Update selected course and store updatedAt timestamp
-  Future<void> updateCourse(String courseName) async {
+  Future<void> updateCourse(String courseId, String courseName) async {
     try {
-      _userModel?.selectedCourse = courseName;
+      _userModel?.selectedCourse = courseId;
+      _userModel?.selectedCourseName = courseName;
       _userModel?.createdAt = DateTime.now(); // track update time
 
       DocumentReference docRef = firebaseFirestore
@@ -503,7 +510,8 @@ class UserController extends ChangeNotifier {
           .doc(firebaseAuth.currentUser!.uid);
 
       await docRef.update({
-        'selectedCourse': courseName,
+        'selectedCourse': courseId,
+        'selectedCourseName': courseName,
         'createdAt': _userModel?.createdAt!.toIso8601String(),
       });
 

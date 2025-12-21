@@ -7,6 +7,7 @@ class UserModel {
   int userNumber;
   String? userProPic;
   dynamic selectedCourse; // Can be String or List
+  String? selectedCourseName; // ✅ new field
   String? selectedInstructor;
   List? userAttendance;
   DateTime? createdAt;
@@ -19,6 +20,7 @@ class UserModel {
     required this.userNumber,
     this.userProPic,
     this.selectedCourse,
+    this.selectedCourseName, // ✅ added
     this.selectedInstructor,
     this.userAttendance,
     this.createdAt,
@@ -40,6 +42,7 @@ class UserModel {
       userNumber: map['userNumber'] ?? 0,
       userProPic: map['userProPic'],
       selectedCourse: map['selectedCourse'],
+      selectedCourseName: map['selectedCourseName'], // ✅ added
       selectedInstructor: map['selectedInstructor'],
       userAttendance: map['userAttendance'] ?? [],
       createdAt: parseDate(map['createdAt']),
@@ -55,6 +58,7 @@ class UserModel {
       'userNumber': userNumber,
       'userProPic': userProPic,
       'selectedCourse': selectedCourse,
+      'selectedCourseName': selectedCourseName, // ✅ added
       'selectedInstructor': selectedInstructor,
       'userAttendance': userAttendance,
       'createdAt': createdAt,

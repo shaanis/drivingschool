@@ -1,5 +1,6 @@
 import 'package:drivingschool/const.dart';
 import 'package:drivingschool/controller/slot_controller.dart';
+import 'package:drivingschool/controller/user_controller.dart';
 import 'package:drivingschool/models/slote_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -572,6 +573,10 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
     Map<String, int> bookingData,
     SlotController controller,
   ) {
+    final userProfile = Provider.of<UserController>(context, listen: false);
+    final hasCourse =
+        userProfile.userModel.selectedCourseName != null &&
+        userProfile.userModel.selectedCourseName.toString().isNotEmpty;
     return FutureBuilder<bool>(
       future: controller.checkUserBookedSlot(widget.studentId, slot.id),
       builder: (context, userBookedSnapshot) {
@@ -712,7 +717,17 @@ class _SlotBookingPageState extends State<SlotBookingPage> {
                         ],
                       ),
                     ),
-                    const Spacer(),
+                    const Spacer(), // 🔥 Course check added here
+                    if (!hasCourse)
+                      Text(
+                        "Select course to book",
+                        style: GoogleFonts.poppins(
+                          color: Colors.red,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
                     if (!full &&
                         bookingAvailableTime &&
                         slot.status == "active" &&

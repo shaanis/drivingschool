@@ -174,7 +174,7 @@ class _UserHomeState extends State<UserHome> {
                                             ),
                                           ),
                                           Text(
-                                            user.selectedCourse!,
+                                            user.selectedCourseName ?? 'N/A',
                                             style: GoogleFonts.epilogue(
                                               color: Colors.white,
                                               fontSize: 16,
@@ -426,8 +426,8 @@ class _UserHomeState extends State<UserHome> {
   Widget _buildQuickActions(user) {
     final List<Map<String, dynamic>> actions = [
       {
-        "icon": Iconsax.calendar_2,
-        "label": "Schedule",
+        "icon": Icons.car_rental,
+        "label": "Tests",
         "onTap": () {
           Navigator.push(
             context,
@@ -436,8 +436,8 @@ class _UserHomeState extends State<UserHome> {
         },
       },
       {
-        "icon": Iconsax.book,
-        "label": "Lessons",
+        "icon": Icons.event_available_outlined,
+        "label": "Slots",
         "onTap": () {
           Navigator.push(
             context,

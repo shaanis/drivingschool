@@ -72,7 +72,7 @@ class _UserProfileState extends State<UserProfile> {
 
           final invoiceList = userProfile.invoiceList;
           final attList = admin.attList;
-          final selectedCourse = userProfile.userModel.selectedCourse;
+          final selectedCourse = userProfile.userModel.selectedCourseName;
 
           final enrollmentDate = formatDate(userProfile.userModel.createdAt);
 
