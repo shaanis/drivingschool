@@ -332,6 +332,9 @@ class UserController extends ChangeNotifier {
       userName: userName,
       userEmail: userEmail,
       userNumber: userNumber,
+      userProPic: null,
+      selectedCourse: "",
+      selectedCourseName: "",
     );
 
     await firebaseFirestore
@@ -349,7 +352,6 @@ class UserController extends ChangeNotifier {
           .doc(uid)
           .get();
 
-      // Check if document exists
       if (snapshot.exists && snapshot.data() != null) {
         final data = snapshot.data() as Map<String, dynamic>;
 
@@ -358,16 +360,19 @@ class UserController extends ChangeNotifier {
           userName: data['userName'] ?? 'User',
           userEmail: data['userEmail'] ?? '',
           userNumber: data['userNumber'] ?? 0,
-          userProPic: data['userProPic'], // can be null
-          selectedCourse: data['selectedCourse'], // can be null
-          selectedInstructor: data['selectedInstructor'], // can be null
+          userProPic: data['userProPic'],
+          selectedCourse: data['selectedCourse'],
+          selectedCourseName: data['selectedCourseName'], // 🔥 FIXED
+          selectedInstructor: data['selectedInstructor'],
+          userAttendance: data['userAttendance'] ?? [], // optional
           createdAt: parseDate(data['createdAt']),
+          updatedAt: parseDate(data['updatedAt']), // optional
         );
       } else {
         _userModel = null;
       }
 
-      notifyListeners(); // important for Provider to update UI
+      notifyListeners();
     } catch (e) {
       print('Error fetching user data: $e');
       _userModel = null;

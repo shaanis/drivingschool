@@ -1,5 +1,6 @@
 import 'package:drivingschool/const.dart';
 import 'package:drivingschool/controller/user_controller.dart';
+import 'package:drivingschool/views/user/mock_test.dart';
 import 'package:drivingschool/views/user/slot_booking_page.dart';
 import 'package:drivingschool/views/user/test_result_page.dart';
 import 'package:drivingschool/views/user/user_settings.dart';
@@ -205,8 +206,7 @@ class _UserHomeState extends State<UserHome> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Stats Section
-                        if (user.selectedCourse != null) _buildStatsSection(),
-
+                        // if (user.selectedCourse != null) _buildStatsSection(),
                         const SizedBox(height: 30),
 
                         // Services Header
@@ -297,71 +297,71 @@ class _UserHomeState extends State<UserHome> {
 
   // ----------------------- Widgets ---------------------------
 
-  Widget _buildStatsSection() {
-    return SizedBox(
-      height: 110,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          _buildStatCard(
-            icon: Iconsax.calendar,
-            title: 'Progress',
-            value: '75%',
-            gradient: [Colors.blueAccent, Colors.blue],
-          ),
-          const SizedBox(width: 15),
-          _buildStatCard(
-            icon: Iconsax.clock,
-            title: 'Hours',
-            value: '24/30',
-            gradient: [Colors.orangeAccent, Colors.orange],
-          ),
-          const SizedBox(width: 15),
-          _buildStatCard(
-            icon: Iconsax.star_1,
-            title: 'Grade',
-            value: 'A+',
-            gradient: [Colors.greenAccent, Colors.green],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildStatsSection() {
+  //   return SizedBox(
+  //     height: 110,
+  //     child: ListView(
+  //       scrollDirection: Axis.horizontal,
+  //       children: [
+  //         _buildStatCard(
+  //           icon: Iconsax.calendar,
+  //           title: 'Progress',
+  //           value: '75%',
+  //           gradient: [Colors.blueAccent, Colors.blue],
+  //         ),
+  //         const SizedBox(width: 15),
+  //         _buildStatCard(
+  //           icon: Iconsax.clock,
+  //           title: 'Hours',
+  //           value: '24/30',
+  //           gradient: [Colors.orangeAccent, Colors.orange],
+  //         ),
+  //         const SizedBox(width: 15),
+  //         _buildStatCard(
+  //           icon: Iconsax.star_1,
+  //           title: 'Grade',
+  //           value: 'A+',
+  //           gradient: [Colors.greenAccent, Colors.green],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildStatCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    required List<Color> gradient,
-  }) {
-    return Container(
-      width: 160,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: gradient),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: Colors.white, size: 22),
-          const Spacer(),
-          Text(
-            title,
-            style: GoogleFonts.epilogue(color: Colors.white70, fontSize: 12),
-          ),
-          Text(
-            value,
-            style: GoogleFonts.epilogue(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildStatCard({
+  //   required IconData icon,
+  //   required String title,
+  //   required String value,
+  //   required List<Color> gradient,
+  // }) {
+  //   return Container(
+  //     width: 160,
+  //     padding: const EdgeInsets.all(14),
+  //     decoration: BoxDecoration(
+  //       gradient: LinearGradient(colors: gradient),
+  //       borderRadius: BorderRadius.circular(18),
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Icon(icon, color: Colors.white, size: 22),
+  //         const Spacer(),
+  //         Text(
+  //           title,
+  //           style: GoogleFonts.epilogue(color: Colors.white70, fontSize: 12),
+  //         ),
+  //         Text(
+  //           value,
+  //           style: GoogleFonts.epilogue(
+  //             color: Colors.white,
+  //             fontSize: 22,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildServiceItem(service) {
     return InkWell(
@@ -451,7 +451,16 @@ class _UserHomeState extends State<UserHome> {
           );
         },
       },
-      {"icon": Iconsax.wallet_3, "label": "Payments"},
+      {
+        "icon": Icons.edit_attributes_rounded,
+        "label": "Mock Test",
+        "onTap": () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => DrivingMockTestPage()),
+          );
+        },
+      },
       {"icon": Iconsax.message, "label": "Support"},
     ];
 

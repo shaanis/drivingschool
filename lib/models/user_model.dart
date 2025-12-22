@@ -41,8 +41,8 @@ class UserModel {
       userEmail: map['userEmail'] ?? '',
       userNumber: map['userNumber'] ?? 0,
       userProPic: map['userProPic'],
-      selectedCourse: map['selectedCourse'],
-      selectedCourseName: map['selectedCourseName'], // ✅ added
+      selectedCourse: map['selectedCourse'] ?? "",
+      selectedCourseName: map['selectedCourseName'] ?? "", // ✅ added
       selectedInstructor: map['selectedInstructor'],
       userAttendance: map['userAttendance'] ?? [],
       createdAt: parseDate(map['createdAt']),
